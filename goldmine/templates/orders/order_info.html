@@ -1,0 +1,98 @@
+{% extends "base.html" %} 
+{% block title %}
+  Золотодобывающая компания. Заказ №{{ order.order_id }}
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <!-- Заголовок -->
+  <h1 class="pb-2 mb-4 text-center text-primary">Заказ №{{ order.order_id }} от {{ order.ordering_date }}</h1>
+  
+  <!-- Карточка с деталями заказа -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title text-secondary">Информация о заказе</h5>
+      <hr>
+      <!-- Список информации -->
+      <ul class="list-group list-group-flush">
+        <!-- Заказчик -->
+        <li class="list-group-item">
+          <strong>Заказчик:</strong> 
+          {{ order.customer.last_name }} {{ order.customer.first_name|first }}.{% if order.customer.middle_name is not None %}{{ order.customer.middle_name|first }}.{% endif %}
+          <span class="text-muted">тел. {{ order.customer.phone_number }}</span>
+        </li>
+        <!-- Менеджер -->
+        <li class="list-group-item">
+          <strong>Менеджер:</strong> 
+          {% if order.employee.first_name == "" %}
+          <span class="text-muted">отсутствует</span>
+          {% else %}
+          {{ order.employee.last_name }} {{ order.employee.first_name|first }}.{% if order.employee.middle_name is not None %}{{ order.employee.middle_name|first }}.{% endif %}
+          <span class="text-muted">тел. {{ order.employee.phone_number }}</span>
+          {% endif %}
+        </li>
+        <!-- Количество золота -->
+        <li class="list-group-item">
+          <strong>Количество золота:</strong> {{ order.gold_amount }} т
+        </li>
+        <!-- Дата оформления -->
+        <li class="list-group-item">
+          <strong>Дата оформления:</strong> {{ order.ordering_date }}
+        </li>
+        <!-- Дата выполнения -->
+        <li class="list-group-item">
+          <strong>Дата выполнения:</strong> {{ order.deadline }}
+        </li>
+        <!-- Статус -->
+        <li class="list-group-item">
+          <strong>Статус:</strong> 
+          <span class="badge 
+              {% if order.status.name == 'Оформлен' %}
+                bg-warning
+              {% elif order.status.name == 'Принят' or order.status.name == 'Выполняется' %}
+                bg-info
+              {% elif order.status.name == 'Выполнено' %}
+                bg-primary
+              {% elif order.status.name == 'Получено' %}
+                bg-success
+              {% elif order.status.name == 'Отменен' %}
+                bg-danger
+              {% else %}
+                bg-secondary
+              {% endif %}">
+            {{ order.status.name }}
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Кнопки действий -->
+  <div class="mt-4 text-center">
+    {% with user.groups.all.0.name as group %}
+    {% if group == "Менеджер" or group == "Администратор" %}
+    <a href="{% url 'tasks:order_tasks' order.order_id %}" class="btn btn-primary me-2">
+      <i class="bi bi-list-task"></i> К задачам
+    </a>
+    <!-- Кнопка Изменить -->
+    <a href="{% url 'orders:manager_change_order' order.order_id %}" class="btn btn-warning me-2">
+      Изменить данные заказа
+    </a>
+    {% endif %}
+    {% endwith %}
+    
+    <!-- Кнопка Удалить -->
+    {% if order.status.name == "Отменен" %}
+    <a href="{% url 'orders:delete_order' order.order_id %}" class="btn btn-danger me-2">
+      Удалить заказ
+    </a>
+    {% else %}
+    <a href="{% url 'orders:cancel_order' order.order_id %}" class="btn btn-danger me-2">
+      Отменить заказ
+    </a>
+    {% endif %}
+    <a href="{% url 'orders:order_list' %}" class="btn btn-secondary">
+      <i class="bi bi-arrow-left-circle"></i> Назад
+    </a>
+  </div>
+</div>
+{% endblock %}

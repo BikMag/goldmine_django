@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">Редактировать задачу №{{ task.id }} для заказа №{{ order.order_id }}</h1>
+  <hr>
+
+  <!-- Форма -->
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.step.label_tag }}
+      {{ form.step }}
+    </div>
+    <div class="mb-3">
+      {{ form.description.label_tag }}
+      {{ form.description }}
+    </div>
+    <div class="mb-3">
+      {{ form.worker.label_tag }}
+      {{ form.worker }}
+    </div>
+    <div class="form-check mb-3">
+      {{ form.completed }}
+      {{ form.completed.label_tag }}
+    </div>
+    <button type="submit" class="btn btn-primary">
+      <i class="bi bi-save"></i> Сохранить изменения
+    </button>
+    <a href="{% url 'tasks:order_tasks' order.order_id %}" class="btn btn-secondary">
+      <i class="bi bi-arrow-left-circle"></i> Назад к задачам
+    </a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">Список сотрудников</h1>
+  <table class="table table-bordered mt-3">
+      <thead class="thead-dark">
+          <tr>
+              <th scope="col">ID</th>
+              <th scope="col">ФИО</th>
+              <th scope="col">Номер телефона</th>
+              <th scope="col">Звание</th>
+              <th scope="col">Описание звания</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for employee in employees %}
+          <tr>
+              <td>{{ employee.employee_id }}</td>
+              <td>{{ employee.employee_full_name }}</td>
+              <td>{{ employee.phone_number }}</td>
+              <td>{{ employee.position_name }}</td>
+              <td>{{ employee.position_description }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+              <td colspan="5" class="text-center">Нет данных</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">Изменение данных заказа №{{ order.order_id }}</h1>
+  <hr>
+
+  <form method="post" class="mt-4">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+      {{ form.status.label_tag }}
+      {{ form.status }}
+    </div>
+    
+    <div class="mb-3">
+      {{ form.manager.label_tag }}
+      {{ form.manager }}
+    </div>
+    
+    <div class="text-center">
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-save"></i> Сохранить изменения
+      </button>
+      <a href="{% url 'orders:order_info' order.order_id %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> Назад
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

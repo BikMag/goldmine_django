@@ -1,0 +1,68 @@
+{% extends "base.html" %} 
+{% block title %}
+  Золотодобывающая компания. Заказы
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <!-- Заголовок страницы -->
+  <h1 class="text-center text-primary">Страница заказов</h1>
+  
+  <!-- Таблица со списком заказов -->
+  <div class="table-responsive mt-4">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Заказчик</th>
+          <th scope="col">Количество золота (т)</th>
+          <th scope="col">Дата оформления</th>
+          <th scope="col">Дата выполнения</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Подробнее</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in order_list %}
+        <tr>
+          <!-- ID заказа -->
+          <th scope="row">{{ order.order_id }}</th>
+          <!-- Фамилия заказчика -->
+          <td>{{ order.customer__last_name }}</td>
+          <!-- Количество золота -->
+          <td>{{ order.gold_amount }}</td>
+          <!-- Дата оформления -->
+          <td>{{ order.ordering_date }}</td>
+          <!-- Дата выполнения -->
+          <td>{{ order.deadline }}</td>
+          <!-- Статус -->
+          <td>
+            <span class="badge 
+              {% if order.status__name == 'Оформлен' %}
+                bg-warning
+              {% elif order.status__name == 'Принят' or order.status__name == 'Выполняется' %}
+                bg-info
+              {% elif order.status__name == 'Выполнено' %}
+                bg-primary
+              {% elif order.status__name == 'Получено' %}
+                bg-success
+              {% elif order.status__name == 'Отменен' %}
+                bg-danger
+              {% else %}
+                bg-secondary
+              {% endif %}">
+              {{ order.status__name }}
+            </span>
+          </td>
+          <!-- Ссылка на подробности -->
+          <td>
+            <a href="{% url 'orders:order_info' order.order_id %}" class="btn btn-sm btn-outline-primary">
+              О заказе
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

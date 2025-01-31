@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}
+  Золотодобывающая компания. Главная
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">Это главная страница проекта "Goldmine"!</h1>
+  <div class="mt-4 text-center">
+      {% if user.is_authenticated %}
+      <div class="alert alert-success" role="alert">
+          Ваша группа: <strong>{{ user.groups.all.0 }}</strong>
+      </div>
+      {% else %}
+      <div class="alert alert-danger" role="alert">
+          Вы не авторизованы
+      </div>
+      {% endif %}
+  </div>
+  <div class="mt-4 text-center card">
+      <p>Добро пожаловать в компанию RGC - Russian Goldmine Company.</p>
+      <p>Наш доход - <strong>{{ total_sum }}</strong> млн руб.</p>
+      <p>Самый платежеспособный клиент - <strong>{{ most_active_customer }}</strong></p>
+  </div>
+</div>
+{% endblock %}

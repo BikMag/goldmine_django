@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">Создание нового заказа</h1>
+  <hr>
+
+  <form method="post" class="mt-4">
+    {% csrf_token %}
+    
+    <!-- Поле для ввода количества золота -->
+    <div class="mb-3">
+      {{ form.gold_amount.label_tag }}
+      {{ form.gold_amount }}
+      {% if form.gold_amount.errors %}
+        <div class="text-danger">
+          {{ form.gold_amount.errors }}
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Поле для ввода даты сдачи заказа -->
+    <div class="mb-3">
+      {{ form.deadline.label_tag }}
+      {{ form.deadline }}
+      {% if form.deadline.errors %}
+        <div class="text-danger">
+          {{ form.deadline.errors }}
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Кнопки -->
+    <div class="text-center">
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Создать заказ
+      </button>
+      <a href="{% url 'orders:order_list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> Вернуться к списку заказов
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

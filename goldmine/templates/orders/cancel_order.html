@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+  Золотодобывающая компания. Отмена заказа
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <!-- Заголовок -->
+  <h1 class="text-center">Отмена заказа</h1>
+  <hr>
+  
+  <!-- Сообщение -->
+  <div class="alert alert-info text-center" role="alert">
+    {{ message }}
+  </div>
+
+  <!-- Кнопка возврата -->
+  <div class="text-center mt-4">
+    <a href="{% url 'orders:order_list' %}" class="btn btn-primary btn-lg">
+      <i class="bi bi-arrow-left-circle"></i> Вернуться к списку заказов
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+<header style="background-color: #ffbf00">
+  <nav class="navbar shadow-sm">
+    <div class="container">
+      {% with request.resolver_match.view_name as view_name %}
+      {% with user.groups.all.0.name as group %}
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a
+            class="nav-link {% if request.resolver_match.view_name == 'homepage:index' %} active {% endif %}"
+            href="{% url 'homepage:index' %}"
+          >
+            Главная
+          </a>
+        </li>
+
+        {% if user.is_authenticated %}
+          {% if group != "Рабочий"%}
+          <li class="nav-item">
+            <a
+              class="nav-link {% if request.resolver_match.view_name == 'orders:order_list' %} active {% endif %}"
+              href="{% url 'orders:order_list' %}"
+            >
+              Заказы
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a
+              class="nav-link {% if request.resolver_match.view_name == 'tasks:task_list' %} active {% endif %}"
+              href="{% url 'tasks:task_list' %}"
+            >
+              Задачи
+            </a>
+          </li>
+          {% endif %}
+          {% if group == "Заказчик" %}
+          <li class="nav-item">
+            <a
+              class="nav-link {% if request.resolver_match.view_name == 'orders:create_order' %} active {% endif %}"
+              href="{% url 'orders:create_order' %}"
+            >
+              Добавить заказ
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a
+              class="nav-link {% if request.resolver_match.view_name == 'employees:employee_list' %} active {% endif %}"
+              href="{% url 'employees:employee_list' %}"
+            >
+              Сотрудники
+            </a>
+          </li>
+          {% endif %}
+        {% endif %}
+
+        <!-- Это блок ссылок для авторизованного пользователя -->
+        {% if user.is_authenticated %}
+        <span class="navbar-text ms-2">Пользователь: <b>{{ user.last_name }} {{ user.first_name|first|add:"." }}</b></span>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+        </li>
+      <!-- Конец блока ссылок для авторизованного пользователя -->
+
+      <!-- А здесь блок ссылок для неавторизованного пользователя -->
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link{% if view_name == 'login' %} active {% endif %}" href="{% url 'login' %}">Войти</a>
+        </li>     
+        <li class="nav-item">
+          <a class="nav-link{% if view_name == 'registration' %} active {% endif %}" href="{% url 'registration' %}">Регистрация</a>
+        </li>      
+      {% endif %}
+      <!-- Конец блока ссылок для неавторизованного пользователя -->
+      </ul>
+      {% endwith %}
+      {% endwith %}
+    </div>
+  </nav>
+</header>
